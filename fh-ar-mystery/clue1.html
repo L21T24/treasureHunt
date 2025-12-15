@@ -51,10 +51,8 @@
         place-items: center;
         background: rgba(0,0,0,0.65);
         z-index: 9999;
-        font-family: system-ui, Arial, sans-serif;
         color: #fff;
         text-align: center;
-        padding: 24px;
       }
 
       #startBtn {
@@ -66,14 +64,6 @@
         color: #fff;
       }
 
-      #msg {
-        margin-top: 14px;
-        opacity: 0.9;
-        font-size: 14px;
-        line-height: 1.3;
-      }
-
-      /* Hint button */
       #hintBtn {
         position: fixed;
         right: 16px;
@@ -82,43 +72,10 @@
         display: none;
         padding: 10px 14px;
         border-radius: 14px;
-        border: 1px solid rgba(255,255,255,0.35);
         background: rgba(0,0,0,0.6);
         color: white;
-        font-size: 14px;
       }
 
-      /* Hint popup */
-      #hintPopup {
-        position: fixed;
-        inset: 0;
-        display: none;
-        align-items: center;
-        justify-content: center;
-        background: rgba(0,0,0,0.7);
-        z-index: 10000;
-        font-family: system-ui, Arial, sans-serif;
-      }
-
-      #hintContent {
-        background: #111;
-        color: white;
-        padding: 20px;
-        border-radius: 16px;
-        max-width: 320px;
-        text-align: center;
-      }
-
-      #closeHint {
-        margin-top: 12px;
-        padding: 8px 12px;
-        border-radius: 12px;
-        border: 1px solid rgba(255,255,255,0.35);
-        background: rgba(255,255,255,0.12);
-        color: white;
-      }
-
-      /* Solved box */
       #solvedBox {
         position: fixed;
         left: 16px;
@@ -126,70 +83,51 @@
         z-index: 9999;
         display: none;
         background: rgba(0,0,0,0.6);
-        padding: 10px 14px;
+        padding: 12px;
         border-radius: 14px;
         color: white;
-        font-size: 14px;
+        width: 180px;
       }
 
+      #markSolved,
       #nextBtn {
-        display: none;
-        margin-top: 10px;
         width: 100%;
         padding: 10px;
         border-radius: 12px;
         border: 1px solid rgba(255,255,255,0.35);
         background: rgba(255,255,255,0.12);
         color: white;
+        margin-top: 8px;
+      }
+
+      #nextBtn {
+        display: none;
       }
     </style>
   </head>
 
   <body>
     <div id="startOverlay">
-      <div>
-        <button id="startBtn">Start Camera</button>
-        <div id="msg">
-          After it starts: point at the police report image (marker1.jpg).
-        </div>
-      </div>
+      <button id="startBtn">Start Camera</button>
     </div>
 
-    <!-- Hint button -->
     <button id="hintBtn">Need a hint?</button>
 
-    <!-- Hint popup -->
-    <div id="hintPopup">
-      <div id="hintContent">
-        <h3>Hint</h3>
-        <p>
-          Think of a place where students go when they need silence and books.
-        </p>
-        <button id="closeHint">Close</button>
-      </div>
-    </div>
-
-    <!-- Solved box -->
     <div id="solvedBox">
-      <label>
-        <input type="checkbox" id="solvedCheck" />
-        Clue solved
-      </label>
+      <button id="markSolved">✔ Mark clue as solved</button>
       <button id="nextBtn">Next clue →</button>
     </div>
 
     <div id="ar">
       <a-scene
-        mindar-image="imageTargetSrc: ../assets/targets.mind; autoStart: false; uiScanning: false; uiLoading: false;"
+        mindar-image="imageTargetSrc: ../assets/targets.mind; autoStart: false;"
         vr-mode-ui="enabled: false"
         device-orientation-permission-ui="enabled: false"
-        renderer="antialias: true; alpha: true"
       >
         <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
         <a-entity mindar-image-target="targetIndex: 0">
-          <a-plane position="0 0 0" width="1.4" height="0.8"
-                   material="color: white; opacity: 0.92"></a-plane>
+          <a-plane position="0 0 0" width="1.4" height="0.8" material="color: white; opacity: 0.92"></a-plane>
           <a-text
             value="CLUE 1:\nFind the place where silence lives between shelves."
             position="-0.65 0.2 0.01"
@@ -202,45 +140,22 @@
 
     <script>
       const sceneEl = document.querySelector("a-scene");
+      const startBtn = document.getElementById("startBtn");
       const overlay = document.getElementById("startOverlay");
-      const btn = document.getElementById("startBtn");
-      const msg = document.getElementById("msg");
-
-      const hintBtn = document.getElementById("hintBtn");
-      const hintPopup = document.getElementById("hintPopup");
-      const closeHint = document.getElementById("closeHint");
-
       const solvedBox = document.getElementById("solvedBox");
-      const solvedCheck = document.getElementById("solvedCheck");
+      const markSolved = document.getElementById("markSolved");
       const nextBtn = document.getElementById("nextBtn");
+      const hintBtn = document.getElementById("hintBtn");
 
-      btn.addEventListener("click", async () => {
-        try {
-          msg.textContent = "Starting camera… allow permission ✅";
-          await sceneEl.systems["mindar-image-system"].start();
-          overlay.style.display = "none";
-          hintBtn.style.display = "block";
-          solvedBox.style.display = "block";
-        } catch (e) {
-          console.error(e);
-          msg.textContent = "Camera failed. Check permissions.";
-        }
+      startBtn.addEventListener("click", async () => {
+        await sceneEl.systems["mindar-image-system"].start();
+        overlay.style.display = "none";
+        solvedBox.style.display = "block";
+        hintBtn.style.display = "block";
       });
 
-      hintBtn.addEventListener("click", () => {
-        hintPopup.style.display = "flex";
-      });
-
-      closeHint.addEventListener("click", () => {
-        hintPopup.style.display = "none";
-      });
-
-      solvedCheck.addEventListener("change", () => {
-        if (solvedCheck.checked) {
-          nextBtn.style.display = "block";
-        } else {
-          nextBtn.style.display = "none";
-        }
+      markSolved.addEventListener("click", () => {
+        nextBtn.style.display = "block";
       });
 
       nextBtn.addEventListener("click", () => {
