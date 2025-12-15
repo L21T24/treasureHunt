@@ -56,6 +56,29 @@
         padding: 10px 12px;
         border-radius: 12px;
       }
+
+
+
+/* Force the camera feed + WebGL canvas to be true fullscreen */
+video {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  object-fit: cover !important;   /* this is the key */
+  z-index: 0 !important;
+}
+
+canvas, .a-canvas {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 1 !important;
+}
+
+
+
     </style>
   </head>
 
