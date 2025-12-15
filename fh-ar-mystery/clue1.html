@@ -45,6 +45,7 @@
         object-fit: cover !important;
       }
 
+      /* START OVERLAY */
       #startOverlay {
         position: fixed;
         inset: 0;
@@ -53,6 +54,14 @@
         background: rgba(0,0,0,0.65);
         z-index: 9999;
         color: white;
+        text-align: center;
+        padding: 24px;
+      }
+
+      #startOverlay p {
+        margin-bottom: 16px;
+        font-size: 15px;
+        opacity: 0.9;
       }
 
       #startBtn {
@@ -64,31 +73,94 @@
         color: white;
       }
 
-      /* NEXT CLUE BUTTON */
-      #nextBtn {
+      /* HINT BUTTON */
+      #hintBtn {
         position: fixed;
-        left: 50%;
-        transform: translateX(-50%);
-        bottom: 20px;
+        right: 16px;
+        bottom: 16px;
         z-index: 9999;
         display: none;
-        padding: 14px 20px;
-        border-radius: 16px;
+        padding: 10px 14px;
+        border-radius: 14px;
         border: 1px solid rgba(255,255,255,0.35);
-        background: rgba(0,0,0,0.7);
+        background: rgba(0,0,0,0.6);
         color: white;
-        font-size: 16px;
+        font-size: 14px;
+      }
+
+      /* NEXT BUTTON */
+      #nextBtn {
+        position: fixed;
+        left: 16px;
+        bottom: 16px;
+        z-index: 9999;
+        display: none;
+        padding: 10px 14px;
+        border-radius: 14px;
+        border: 1px solid rgba(255,255,255,0.35);
+        background: rgba(0,0,0,0.6);
+        color: white;
+        font-size: 14px;
+      }
+
+      /* HINT POPUP */
+      #hintPopup {
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0,0,0,0.7);
+        z-index: 10000;
+      }
+
+      #hintContent {
+        background: #111;
+        color: white;
+        padding: 20px;
+        border-radius: 16px;
+        max-width: 320px;
+        text-align: center;
+      }
+
+      #closeHint {
+        margin-top: 12px;
+        padding: 8px 12px;
+        border-radius: 12px;
+        border: 1px solid rgba(255,255,255,0.35);
+        background: rgba(255,255,255,0.12);
+        color: white;
       }
     </style>
   </head>
 
   <body>
+    <!-- START OVERLAY -->
     <div id="startOverlay">
-      <button id="startBtn">Start Camera</button>
+      <div>
+        <p>
+          Tap <b>Start Camera</b> and point your phone at the police report image.
+        </p>
+        <button id="startBtn">Start Camera</button>
+      </div>
     </div>
 
-    <!-- PERMANENT NEXT BUTTON -->
+    <!-- HINT BUTTON -->
+    <button id="hintBtn">Need a hint?</button>
+
+    <!-- NEXT BUTTON -->
     <button id="nextBtn">Go to next clue →</button>
+
+    <!-- HINT POPUP -->
+    <div id="hintPopup">
+      <div id="hintContent">
+        <h3>Hint</h3>
+        <p>
+          Think of a quiet place at FH where students study surrounded by books.
+        </p>
+        <button id="closeHint">Close</button>
+      </div>
+    </div>
 
     <div id="ar">
       <a-scene
@@ -118,14 +190,29 @@
 
     <script>
       const sceneEl = document.querySelector("a-scene");
+
       const startBtn = document.getElementById("startBtn");
       const overlay = document.getElementById("startOverlay");
+
+      const hintBtn = document.getElementById("hintBtn");
+      const hintPopup = document.getElementById("hintPopup");
+      const closeHint = document.getElementById("closeHint");
+
       const nextBtn = document.getElementById("nextBtn");
 
       startBtn.addEventListener("click", async () => {
         await sceneEl.systems["mindar-image-system"].start();
         overlay.style.display = "none";
-        nextBtn.style.display = "block"; // always visible now
+        hintBtn.style.display = "block";
+        nextBtn.style.display = "block";
+      });
+
+      hintBtn.addEventListener("click", () => {
+        hintPopup.style.display = "flex";
+      });
+
+      closeHint.addEventListener("click", () => {
+        hintPopup.style.display = "none";
       });
 
       nextBtn.addEventListener("click", () => {
