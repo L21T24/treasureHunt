@@ -12,6 +12,28 @@
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
     <style>
+
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #000;
+}
+
+a-scene {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+}
+
+
+
+
+
       html, body { margin:0; padding:0; height:100%; background:#000; font-family: system-ui, Arial; }
       .ui {
         position: fixed; left: 0; right: 0; top: 0;
@@ -47,10 +69,12 @@
       - We use targetIndex="0" for marker1.
     -->
     <a-scene
-      mindar-image="imageTargetSrc: assets/targets.mind; autoStart: false; uiScanning: yes; uiLoading: yes;"
-      vr-mode-ui="enabled: false"
-      device-orientation-permission-ui="enabled: false"
-      embedded
+  mindar-image="imageTargetSrc: ../assets/targets.mind; autoStart: false; uiScanning: false; uiLoading: false;"
+  vr-mode-ui="enabled: false"
+  device-orientation-permission-ui="enabled: false"
+  embedded
+>
+
     >
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
