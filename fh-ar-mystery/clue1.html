@@ -19,6 +19,7 @@
         height: 100%;
         background: #000;
         overflow: hidden;
+        font-family: system-ui, Arial, sans-serif;
       }
 
       #ar {
@@ -28,8 +29,8 @@
         height: 100vh;
       }
 
-      #ar .a-canvas,
-      #ar canvas {
+      #ar canvas,
+      #ar .a-canvas {
         position: fixed !important;
         inset: 0 !important;
         width: 100vw !important;
@@ -51,57 +52,32 @@
         place-items: center;
         background: rgba(0,0,0,0.65);
         z-index: 9999;
-        color: #fff;
-        text-align: center;
+        color: white;
       }
 
       #startBtn {
         font-size: 18px;
-        padding: 12px 18px;
-        border-radius: 14px;
-        border: 1px solid rgba(255,255,255,0.35);
-        background: rgba(255,255,255,0.12);
-        color: #fff;
-      }
-
-      #hintBtn {
-        position: fixed;
-        right: 16px;
-        bottom: 16px;
-        z-index: 9999;
-        display: none;
-        padding: 10px 14px;
-        border-radius: 14px;
-        background: rgba(0,0,0,0.6);
-        color: white;
-      }
-
-      #solvedBox {
-        position: fixed;
-        left: 16px;
-        bottom: 16px;
-        z-index: 9999;
-        display: none;
-        background: rgba(0,0,0,0.6);
-        padding: 12px;
-        border-radius: 14px;
-        color: white;
-        width: 180px;
-      }
-
-      #markSolved,
-      #nextBtn {
-        width: 100%;
-        padding: 10px;
-        border-radius: 12px;
+        padding: 14px 20px;
+        border-radius: 16px;
         border: 1px solid rgba(255,255,255,0.35);
         background: rgba(255,255,255,0.12);
         color: white;
-        margin-top: 8px;
       }
 
+      /* NEXT CLUE BUTTON */
       #nextBtn {
+        position: fixed;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 20px;
+        z-index: 9999;
         display: none;
+        padding: 14px 20px;
+        border-radius: 16px;
+        border: 1px solid rgba(255,255,255,0.35);
+        background: rgba(0,0,0,0.7);
+        color: white;
+        font-size: 16px;
       }
     </style>
   </head>
@@ -111,12 +87,8 @@
       <button id="startBtn">Start Camera</button>
     </div>
 
-    <button id="hintBtn">Need a hint?</button>
-
-    <div id="solvedBox">
-      <button id="markSolved">✔ Mark clue as solved</button>
-      <button id="nextBtn">Next clue →</button>
-    </div>
+    <!-- PERMANENT NEXT BUTTON -->
+    <button id="nextBtn">Go to next clue →</button>
 
     <div id="ar">
       <a-scene
@@ -127,7 +99,13 @@
         <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
         <a-entity mindar-image-target="targetIndex: 0">
-          <a-plane position="0 0 0" width="1.4" height="0.8" material="color: white; opacity: 0.92"></a-plane>
+          <a-plane
+            position="0 0 0"
+            width="1.4"
+            height="0.8"
+            material="color: white; opacity: 0.92"
+          ></a-plane>
+
           <a-text
             value="CLUE 1:\nFind the place where silence lives between shelves."
             position="-0.65 0.2 0.01"
@@ -142,20 +120,12 @@
       const sceneEl = document.querySelector("a-scene");
       const startBtn = document.getElementById("startBtn");
       const overlay = document.getElementById("startOverlay");
-      const solvedBox = document.getElementById("solvedBox");
-      const markSolved = document.getElementById("markSolved");
       const nextBtn = document.getElementById("nextBtn");
-      const hintBtn = document.getElementById("hintBtn");
 
       startBtn.addEventListener("click", async () => {
         await sceneEl.systems["mindar-image-system"].start();
         overlay.style.display = "none";
-        solvedBox.style.display = "block";
-        hintBtn.style.display = "block";
-      });
-
-      markSolved.addEventListener("click", () => {
-        nextBtn.style.display = "block";
+        nextBtn.style.display = "block"; // always visible now
       });
 
       nextBtn.addEventListener("click", () => {
