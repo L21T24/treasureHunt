@@ -6,7 +6,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
     />
-    <title>Clue 2</title>
+    <title>Clue 3</title>
 
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
@@ -131,10 +131,11 @@
   </head>
 
   <body>
+    <!-- START -->
     <div id="startOverlay">
       <div>
         <p>
-          Tap <b>Start Camera</b> and point your phone at the <b>Library marker</b>.
+          Tap <b>Start Camera</b> and point at the <b>coffee spill marker</b>.
         </p>
         <button id="startBtn">Start Camera</button>
       </div>
@@ -143,26 +144,28 @@
     <button id="hintBtn">Need a hint?</button>
     <button id="nextBtn">Go to next clue →</button>
 
+    <!-- HINT -->
     <div id="hintPopup">
       <div id="hintContent">
         <h3>Hint</h3>
         <p>
-          Look for a place with books, quiet study areas, and “please be silent” energy.
+          Where does caffeine flow and students refuel between lectures?
         </p>
         <button id="closeHint">Close</button>
       </div>
     </div>
 
+    <!-- AR -->
     <div id="ar">
       <a-scene
-        mindar-image="imageTargetSrc: ../assets/targets1.mind; autoStart: false; uiScanning: false; uiLoading: false;"
+        mindar-image="imageTargetSrc: ../assets/targets3.mind; autoStart: false; uiScanning: false; uiLoading: false;"
         vr-mode-ui="enabled: false"
         device-orientation-permission-ui="enabled: false"
       >
         <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-        <!-- If targets2.mind contains only marker2, index is 0 -->
-        <a-entity mindar-image-target="targetIndex: 0">
+        <!-- IMPORTANT: marker index = 2 -->
+        <a-entity mindar-image-target="targetIndex: 2">
           <a-plane
             position="0 0 0"
             width="1.6"
@@ -171,7 +174,7 @@
           ></a-plane>
 
           <a-text
-            value="RECOVERED NOTES (LIBRARY):\nCoffee stains. Scribbles.\n“Deadline. Deadline. Deadline.”\n\nSECURITY LOG:\nAlex stayed far longer than usual.\nLeft in a hurry and forgot their jacket.\n\nNEXT LOCATION:\nFollow the trail of caffeine and despair."
+            value="CAFETERIA FINDINGS:\nAn abandoned tray.\nA spilled coffee cup.\nCaffeine overdosed.\n\nRECOVERED OBJECT:\nUSB stick labelled:\n“FINAL_v7_REALFINAL”.\n\nNEXT LOCATION:\nWhere projects are born… and sanity is lost."
             position="-0.75 0.15 0.01"
             width="1.45"
             wrap-count="36"
@@ -211,7 +214,7 @@
       });
 
       nextBtn.addEventListener("click", () => {
-        window.location.href = "clue3.html";
+        window.location.href = "clue4.html";
       });
     </script>
   </body>
