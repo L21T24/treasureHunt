@@ -7,22 +7,25 @@
 
   <style>
     html, body {
-      margin: 0;
+      margin-top: 2rem;
       padding: 0;
-      height: 100%;
+      min-height: 100%;
       font-family: system-ui, Arial, sans-serif;
-      background: radial-gradient(circle at top, #1a1a1a, #000);
+      background: #000;
       color: white;
     }
 
-    .container {
-      height: 100%;
+    body {
       display: flex;
-      flex-direction: column;
-      align-items: center;
       justify-content: center;
-      text-align: center;
+      align-items: center;
+    }
+
+    .container {
+      max-width: 480px;
+      width: 100%;
       padding: 24px;
+      /*text-align: center;*/
     }
 
     h1 {
@@ -30,10 +33,36 @@
       margin-bottom: 0.5rem;
     }
 
-    p {
-      max-width: 420px;
+    .intro {
       opacity: 0.85;
-      margin-bottom: 2rem;
+      margin-bottom: 24px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .instructions {
+      margin: 0 auto 24px auto;
+      text-align: left;
+    }
+
+    .instructions h2 {
+      font-size: 1.2rem;
+      margin-bottom: 8px;
+      
+    }
+
+    .instructions ol {
+      padding-left: 18px;
+      margin: 0;
+    }
+
+    .instructions li {
+      margin-bottom: 10px;
+    }
+
+    .start {
+      margin-top: 12px;
+      text-align: center;
     }
 
     button {
@@ -55,18 +84,34 @@
 <body>
   <div class="container">
     <h1>🔎 FH AR Mystery</h1>
-    <p>
+
+    <p class="intro">
       A student has disappeared at FH St. Pölten.<br>
       Follow the clues, scan the markers, and uncover the truth.
     </p>
 
-    <!-- IMPORTANT: link to clue1.html -->
-    <button onclick="startGame()">Start Investigation</button>
+    <div class="instructions">
+      <h2>How to play</h2>
+      <ol>
+        <li>Tap <b>Start Camera</b> and scan the image marker.</li>
+        <li>Read the AR clue that appears.</li>
+        <li>
+          When finished, tap <b>“Go to next clue →”</b><br>
+          <small>(This is required to continue.)</small>
+        </li>
+        <li>Go to the next location described in the clue.</li>
+        <li>If you’re stuck, tap <b>“Need a hint?”</b>.</li>
+      </ol>
+    </div>
+
+    <div class="start">
+      <button onclick="startGame()">Start Investigation</button>
+    </div>
   </div>
 
   <script>
     function startGame() {
-      window.location.href = "clue1.html";
+      window.location.href = "clue1.html?v=1";
     }
   </script>
 </body>
