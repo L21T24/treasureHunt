@@ -1,213 +1,229 @@
 <!doctype html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
-    />
-    <title>Clue 5 — Case Closed</title>
 
-    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <title>Clue 5 — Case Closed</title>
 
-    <style>
-      html, body {
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        height: 100%;
-        background: #000;
-        overflow: hidden;
-        font-family: system-ui, Arial, sans-serif;
-      }
+  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
-      #ar {
-        position: fixed;
-        inset: 0;
-        width: 100vw;
-        height: 100vh;
-      }
+  <style>
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      overflow: hidden;
+      font-family: system-ui, Arial, sans-serif;
+    }
 
-      #ar canvas,
-      #ar .a-canvas {
-        position: fixed !important;
-        inset: 0 !important;
-        width: 100vw !important;
-        height: 100vh !important;
-      }
+    #ar {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+    }
 
-      #mindar-video, video {
-        position: fixed !important;
-        inset: 0 !important;
-        width: 100vw !important;
-        height: 100vh !important;
-        object-fit: cover !important;
-      }
+    #ar canvas,
+    #ar .a-canvas {
+      position: fixed !important;
+      inset: 0 !important;
+      width: 100vw !important;
+      height: 100vh !important;
+    }
 
-      #startOverlay {
-        position: fixed;
-        inset: 0;
-        display: grid;
-        place-items: center;
-        background: rgba(0,0,0,0.65);
-        z-index: 9999;
-        color: white;
-        text-align: center;
-        padding: 24px;
-      }
+    #mindar-video,
+    video {
+      position: fixed !important;
+      inset: 0 !important;
+      width: 100vw !important;
+      height: 100vh !important;
+      object-fit: cover !important;
+    }
 
-      #startOverlay p {
-        margin-bottom: 16px;
-        font-size: 15px;
-        opacity: 0.9;
-      }
+    #startOverlay {
+      position: fixed;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      background: rgba(0, 0, 0, 0.65);
+      z-index: 9999;
+      color: white;
+      text-align: center;
+      padding: 24px;
+    }
 
-      #startBtn {
-        font-size: 18px;
-        padding: 14px 20px;
-        border-radius: 16px;
-        border: 1px solid rgba(255,255,255,0.35);
-        background: rgba(255,255,255,0.12);
-        color: white;
-      }
+    #startOverlay p {
+      margin-bottom: 16px;
+      font-size: 15px;
+      opacity: 0.9;
+    }
 
-      #hintBtn {
-        position: fixed;
-        right: 16px;
-        bottom: 16px;
-        z-index: 9999;
-        display: none;
-        padding: 10px 14px;
-        border-radius: 14px;
-        border: 1px solid rgba(255,255,255,0.35);
-        background: rgba(0,0,0,0.6);
-        color: white;
-        font-size: 14px;
-      }
+    #startBtn {
+      font-size: 18px;
+      padding: 14px 20px;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      background: rgba(255, 255, 255, 0.12);
+      color: white;
+    }
 
-      #nextBtn {
-        position: fixed;
-        left: 16px;
-        bottom: 16px;
-        z-index: 9999;
-        display: none;
-        padding: 10px 14px;
-        border-radius: 14px;
-        border: 1px solid rgba(255,255,255,0.35);
-        background: rgba(0,0,0,0.6);
-        color: white;
-        font-size: 14px;
-      }
+    #hintBtn {
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      z-index: 9999;
+      display: none;
+      padding: 10px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      background: rgba(0, 0, 0, 0.6);
+      color: white;
+      font-size: 14px;
+    }
 
-      #hintPopup {
-        position: fixed;
-        inset: 0;
-        display: none;
-        align-items: center;
-        justify-content: center;
-        background: rgba(0,0,0,0.7);
-        z-index: 10000;
-      }
+    #nextBtn {
+      position: fixed;
+      left: 16px;
+      bottom: 16px;
+      z-index: 9999;
+      display: none;
+      padding: 10px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      background: rgba(0, 0, 0, 0.6);
+      color: white;
+      font-size: 14px;
+    }
 
-      #hintContent {
-        background: #111;
-        color: white;
-        padding: 20px;
-        border-radius: 16px;
-        max-width: 320px;
-        text-align: center;
-      }
+    #hintPopup {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 10000;
+    }
 
-      #closeHint {
-        margin-top: 12px;
-        padding: 8px 12px;
-        border-radius: 12px;
-        border: 1px solid rgba(255,255,255,0.35);
-        background: rgba(255,255,255,0.12);
-        color: white;
-      }
-    </style>
-  </head>
+    #hintContent {
+      background: #111;
+      color: white;
+      padding: 20px;
+      border-radius: 16px;
+      max-width: 320px;
+      text-align: center;
+    }
 
-  <body>
-    <div id="startOverlay">
-      <div>
-        <p>Tap <b>Start Camera</b> and point at the <b>final marker</b>.</p>
-        <button id="startBtn">Start Camera</button>
-      </div>
+    #closeHint {
+      margin-top: 12px;
+      padding: 8px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      background: rgba(255, 255, 255, 0.12);
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="startOverlay">
+    <div>
+      <p>Tap <b>Start Camera</b> and point at the <b>final marker</b>.</p>
+      <button id="startBtn">Start Camera</button>
     </div>
+  </div>
 
-    <button id="hintBtn">Need a hint?</button>
-    <button id="nextBtn">Restart →</button>
+  <button id="hintBtn">Need a hint?</button>
+  <button id="nextBtn">Restart →</button>
 
-    <div id="hintPopup">
-      <div id="hintContent">
-        <h3>Hint</h3>
-        <p>Look for the last marker image you printed (the “final reveal” one).</p>
-        <button id="closeHint">Close</button>
-      </div>
+  <div id="hintPopup">
+    <div id="hintContent">
+      <h3>Hint</h3>
+      <p>Look for the last marker image you printed (the “final reveal” one).</p>
+      <button id="closeHint">Close</button>
     </div>
+  </div>
 
-    <div id="ar">
-      <a-scene
-        mindar-image="imageTargetSrc: ../assets/targets5.mind; autoStart: false; uiScanning: false; uiLoading: false;"
-        vr-mode-ui="enabled: false"
-        device-orientation-permission-ui="enabled: false"
-      >
-        <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+  <div id="ar">
+    <a-scene
+      mindar-image="imageTargetSrc: ../assets/targets5.mind; autoStart: false; uiScanning: false; uiLoading: false;"
+      vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
 
-        <a-entity mindar-image-target="targetIndex: 0">
-          <a-plane
-            position="0 0 0"
-            width="1.6"
-            height="1.25"
-            material="color: white; opacity: 0.95"
-          ></a-plane>
+      <a-assets>
+        <img id="paperTexture" src="../assets/old-paper.png">
+      </a-assets>
 
-          <a-text
-            value="✅ CASE CLOSED\n\nAlex K. was found.\nAlive. Overworked.\nSurrounded by monitors, errors,\nand empty energy drinks.\n\nFINAL STATEMENT:\n“Sorry for the panic…\nI just needed to finish the project.”\n\n(Please remember to sleep.)"
-            position="-0.75 0.10 0.01"
-            width="1.45"
-            wrap-count="36"
-            line-height="50"
-            color="#111"
-            align="left"
-          ></a-text>
-        </a-entity>
-      </a-scene>
-    </div>
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-    <script>
-      const sceneEl = document.querySelector("a-scene");
+      <a-entity mindar-image-target="targetIndex: 0">
+        <a-plane
+          position="0 0 0"
+          width="1.6"
+          height="1.25"
+          material="
+            src: #paperTexture;
+            roughness: 1;
+            metalness: 0;
+            opacity: 0.98;
+          "
+        ></a-plane>
 
-      const startBtn = document.getElementById("startBtn");
-      const overlay = document.getElementById("startOverlay");
+        <a-text
+          value="✅ CASE CLOSED\n\nAlex K. was found.\nAlive. Overworked.\nSurrounded by monitors, errors,\nand empty energy drinks.\n\nFINAL STATEMENT:\n“Sorry for the panic…\nI just needed to finish the project.”\n\n(Please remember to sleep.)"
+          position="-0.55 0.45 0.01"
+          width="1.5"
+          wrap-count="30"
+          line-height="38"
+          color="#3b2f1c"
+          align="left"
+          anchor="left"
+          baseline="top"
+          font="../assets/font.fnt"
+          negate="false"
+          scale="0.7 0.5 0.5"
+        ></a-text>
 
-      const hintBtn = document.getElementById("hintBtn");
-      const hintPopup = document.getElementById("hintPopup");
-      const closeHint = document.getElementById("closeHint");
+      </a-entity>
+    </a-scene>
+  </div>
 
-      const nextBtn = document.getElementById("nextBtn");
+  <script>
+    const sceneEl = document.querySelector("a-scene");
 
-      startBtn.addEventListener("click", async () => {
-        await sceneEl.systems["mindar-image-system"].start();
-        overlay.style.display = "none";
-        hintBtn.style.display = "block";
-        nextBtn.style.display = "block";
-      });
+    const startBtn = document.getElementById("startBtn");
+    const overlay = document.getElementById("startOverlay");
 
-      hintBtn.addEventListener("click", () => {
-        hintPopup.style.display = "flex";
-      });
+    const hintBtn = document.getElementById("hintBtn");
+    const hintPopup = document.getElementById("hintPopup");
+    const closeHint = document.getElementById("closeHint");
 
-      closeHint.addEventListener("click", () => {
-        hintPopup.style.display = "none";
-      });
+    const nextBtn = document.getElementById("nextBtn");
 
-      nextBtn.addEventListener("click", () => {
-        window.location.href = "clue1.html?v=1";
-      });
-    </script>
-  </body>
+    startBtn.addEventListener("click", async () => {
+      await sceneEl.systems["mindar-image-system"].start();
+      overlay.style.display = "none";
+      hintBtn.style.display = "block";
+      nextBtn.style.display = "block";
+    });
+
+    hintBtn.addEventListener("click", () => {
+      hintPopup.style.display = "flex";
+    });
+
+    closeHint.addEventListener("click", () => {
+      hintPopup.style.display = "none";
+    });
+
+    nextBtn.addEventListener("click", () => {
+      window.location.href = "clue1.html?v=1";
+    });
+  </script>
+</body>
+
 </html>
