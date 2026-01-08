@@ -2,6 +2,8 @@
 
 ⚠️ **Important:** Please open the game **on your phone** for the best experience 😊
 
+Link to open game -> https://l21t24.github.io/treasureHunt/fh-ar-mystery/index.html
+
 This is an **AR-based murder mystery game** created at **FH**, where players investigate a crime by scanning visual markers to uncover clues and solve the case.
 
 ---
